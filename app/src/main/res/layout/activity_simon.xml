@@ -8,4 +8,70 @@
     tools:context=".activity_simon"
     android:background="#2C2C2C">
 
+
+    <TextView
+        android:id="@+id/SimonName"
+        android:layout_width="264dp"
+        android:layout_height="77dp"
+        android:fontFamily="@font/dailybubble"
+        android:text="Nombre : "
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.058" />
+
+
+    <TextView
+        android:id="@+id/NameDb"
+        android:layout_width="155dp"
+        android:layout_height="61dp"
+        android:fontFamily="@font/dailybubble"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.293"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.066" />
+
+
+    <Button
+        android:id="@+id/EmpezarBoton"
+        android:layout_width="279dp"
+        android:layout_height="91dp"
+        android:backgroundTint="#FF5722"
+        android:fontFamily="@font/dailybubble"
+        android:text=" EMPEZAR "
+        android:textAlignment="center"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.954" />
+
+    <TextView
+        android:id="@+id/NumberDb"
+        android:layout_width="202dp"
+        android:layout_height="276dp"
+        android:fontFamily="@font/dailybubble"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="200sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.534" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,7 +15,7 @@
         <activity
             android:name=".activity_simon"
             android:exported="false"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
