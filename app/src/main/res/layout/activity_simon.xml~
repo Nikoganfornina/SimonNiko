@@ -9,24 +9,19 @@
     android:background="#2C2C2C">
 
     <!-- Nombre del jugador -->
-
-    <!-- Puntaje -->
-
-    <!-- Botón de empezar -->
     <TextView
         android:id="@+id/SimonName"
         android:layout_width="264dp"
         android:layout_height="77dp"
-        android:layout_marginTop="80dp"
         android:fontFamily="@font/dailybubble"
         android:text="Nombre : "
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2" />
 
     <TextView
         android:id="@+id/NameDb"
@@ -37,18 +32,18 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="50sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
-        app:layout_constraintStart_toEndOf="@id/SimonName"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.117" />
+        app:layout_constraintStart_toEndOf="@id/SimonName"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+    <!-- Puntaje -->
+
+    <!-- Botón de empezar -->
     <TextView
         android:id="@+id/NumberDb"
         android:layout_width="202dp"
         android:layout_height="276dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="356dp"
         android:fontFamily="@font/dailybubble"
         android:text="0"
         android:textAlignment="center"
@@ -120,23 +115,5 @@
         app:layout_constraintStart_toEndOf="@id/blueButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.577" />
-
-    <TextView
-        android:id="@+id/scoreTextView"
-        android:layout_width="222dp"
-        android:layout_height="97dp"
-        android:fontFamily="@font/dailybubble"
-        android:text="Score: 0"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@id/EmpezarBoton"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

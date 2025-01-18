@@ -1,69 +1,141 @@
 package com.example.simonniko
 
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
+import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.CountDownTimer
+import android.os.Handler
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.content.ContextCompat
+import kotlin.random.Random
 
 class activity_simon : AppCompatActivity() {
+
+    private lateinit var redButton: Button
+    private lateinit var yellowButton: Button
+    private lateinit var blueButton: Button
+    private lateinit var greenButton: Button
+    private lateinit var scoreTextView: TextView
+
+    private val sequence = mutableListOf<Int>()
+    private val playerSequence = mutableListOf<Int>()
+    private var level = 1
+    private var score = 0
+
+    private val handler = Handler()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_simon)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        // Initialize UI components
+        redButton = findViewById(R.id.redButton)
+        yellowButton = findViewById(R.id.yellowButton)
+        blueButton = findViewById(R.id.blueButton)
+        greenButton = findViewById(R.id.greenButton)
+        scoreTextView = findViewById(R.id.scoreTextView)
+
+        // Start the game
+        startLevel()
+
+        // Set up button click listeners
+        redButton.setOnClickListener { handlePlayerInput(0) }
+        yellowButton.setOnClickListener { handlePlayerInput(1) }
+        blueButton.setOnClickListener { handlePlayerInput(2) }
+        greenButton.setOnClickListener { handlePlayerInput(3) }
+    }
+
+    private fun startLevel() {
+        playerSequence.clear()
+        addToSequence()
+        playSequence()
+    }
+
+    private fun addToSequence() {
+        sequence.add(Random.nextInt(4))
+    }
+
+    private fun playSequence() {
+        var delay = 500L
+        sequence.forEachIndexed { index, color ->
+            handler.postDelayed({
+                illuminateButton(color)
+                playSound(color)
+            }, delay)
+            delay += 1000L - (level * 100L).coerceAtLeast(300L)
         }
+    }
 
-        val simonName: TextView = findViewById(R.id.SimonName)
+    private fun illuminateButton(color: Int) {
+        val button = getButtonByColor(color)
+        val originalColor = button.background
+        val highlightColor = ContextCompat.getDrawable(this, R.color.white)
 
-        val empezarBoton: Button = findViewById(R.id.EmpezarBoton)
+        button.background = highlightColor
+        handler.postDelayed({
+            button.background = originalColor
+        }, 500L)
+    }
 
-
-        // Definir los colores
-        val color1 = resources.getColor(android.R.color.holo_red_dark)   // Rojo
-        val color2 = resources.getColor(android.R.color.holo_blue_dark)  // Azul
-        val color3 = resources.getColor(android.R.color.holo_orange_dark) // Amarillo
-        val color4 = resources.getColor(android.R.color.holo_green_dark)  // Verde
-
-
-        // Animar el cambio de color
-        val colorAnim = ObjectAnimator.ofObject(empezarBoton, "backgroundColor", ArgbEvaluator(), color1, color2, color3, color4)
-        colorAnim.duration = 8000 // 2 segundos para el ciclo completo
-        colorAnim.repeatCount = ObjectAnimator.INFINITE // Repite el ciclo indefinidamente
-        colorAnim.repeatMode = ObjectAnimator.RESTART // Reinicia el ciclo después de completar uno
-        colorAnim.start()
-
-
-        // Referencias a los views
-        val numberDbTextView: TextView = findViewById(R.id.NumberDb)
-        val startButton: Button = findViewById(R.id.EmpezarBoton)
-
-        // Al presionar el botón "Empezar"
-        startButton.setOnClickListener {
-            // Inicializamos el contador en 3 segundos
-            val countDownTimer = object : CountDownTimer(3000, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    // Actualizamos el texto con el tiempo restante
-                    numberDbTextView.text = (millisUntilFinished / 1000).toString()
-                }
-
-                override fun onFinish() {
-                    // Cuando termine el contador, puedes hacer algo (como ocultar el número o cambiar el estado)
-                    numberDbTextView.text = "¡GO!"
-                }
+    private fun playSound(color: Int) {
+        val soundRes = when (color) {
+            0 -> R.raw.red_sound
+            1 -> R.raw.yellow_sound
+            2 -> R.raw.blue_sound
+            3 -> R.raw.green_sound
+            else -> null
+        }
+        soundRes?.let {
+            val mediaPlayer = MediaPlayer.create(this, it)
+            mediaPlayer.start()
+            mediaPlayer.setOnCompletionListener { mp ->
+                mp.release()
             }
+        }
+    }
 
-            // Iniciamos el contador
-            countDownTimer.start()
+    private fun handlePlayerInput(color: Int) {
+        playerSequence.add(color)
+
+        // Check correctness so far
+        for (i in playerSequence.indices) {
+            if (playerSequence[i] != sequence[i]) {
+                gameOver()
+                return
+            }
         }
 
+        // If complete, go to next level
+        if (playerSequence.size == sequence.size) {
+            score += level * 10
+            level++
+            scoreTextView.text = "Score: $score" // Update score
+            Toast.makeText(this, "¡Nivel $level!", Toast.LENGTH_SHORT).show()
+            handler.postDelayed({
+                startLevel()
+            }, 1000L)
+        }
+    }
+
+    private fun gameOver() {
+        Toast.makeText(this, "Juego terminado. Puntaje final: $score", Toast.LENGTH_LONG).show()
+        score = 0
+        level = 1
+        scoreTextView.text = "Score: $score" // Reset score
+        sequence.clear()
+        handler.postDelayed({
+            startLevel()
+        }, 2000L)
+    }
+
+    private fun getButtonByColor(color: Int): Button {
+        return when (color) {
+            0 -> redButton
+            1 -> yellowButton
+            2 -> blueButton
+            3 -> greenButton
+            else -> throw IllegalArgumentException("Color inválido")
+        }
     }
 }
